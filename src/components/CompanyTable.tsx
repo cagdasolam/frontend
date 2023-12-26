@@ -40,7 +40,7 @@ const CompanyTable = (props: Props) => {
       columns={columns}
       dataSource={props.companies}
       loading={props.loading}
-      rowKey="_id"
+      rowKey="id"
       pagination={props.pagination}
       onChange={handleTableChange}
     />

@@ -4,6 +4,7 @@ import { Layout } from 'antd';
 
 import Navbar from './components/Navbar';
 import Companypage from './pages/CompanyPage';
+import ProductPage from './pages/ProductPage';
 
 const { Content } = Layout;
 
@@ -17,7 +18,7 @@ function App() {
         <Navbar currentPath={currentPath} setCurrentPath={setCurrentPath}/>
         <Content>
           <Routes>
-            <Route path="/products" element={<h1>Companies</h1>} />
+            <Route path="/products" element={<ProductPage />} />
             <Route path="/companies" element={<Companypage />} />
             <Route path="/about" element={<h1>About</h1>} />
             <Route path="/" element={<Navigate to="/companies" />} />
