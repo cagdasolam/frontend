@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { Layout } from 'antd';
 
 import Navbar from './components/Navbar';
+import Companypage from './pages/CompanyPage';
 
 const { Content } = Layout;
 
@@ -14,6 +15,14 @@ function App() {
     <BrowserRouter>
       <Layout>
         <Navbar currentPath={currentPath} setCurrentPath={setCurrentPath}/>
+        <Content>
+          <Routes>
+            <Route path="/products" element={<h1>Companies</h1>} />
+            <Route path="/companies" element={<Companypage />} />
+            <Route path="/about" element={<h1>About</h1>} />
+            <Route path="/" element={<Navigate to="/companies" />} />
+          </Routes>
+        </Content>
       </Layout>
     </BrowserRouter>
   );

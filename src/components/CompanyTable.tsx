@@ -1,6 +1,6 @@
 import { Table, Button, Space, SpinProps, TablePaginationConfig } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { UseTableFeature, useTableFeatures } from '../utils/handleTable.jsx';
+import { useTableFeatures } from '../utils/handleTable';
 import { Company } from '../types/Company.js';
 
 type Props = { 
@@ -13,7 +13,7 @@ type Props = {
 }
 
 const CompanyTable = (props: Props) => {
-  const { handleTableChange, handleSearch, handleReset, generateColumn }: UseTableFeature = useTableFeatures();
+  const { handleTableChange, handleSearch, handleReset, generateColumn } = useTableFeatures();
 
   const columns = [
     generateColumn('name', 'Company Name'),
@@ -29,7 +29,7 @@ const CompanyTable = (props: Props) => {
       render: (text, record) => (
         <Space size="middle">
           <Button ghost type="primary" icon={<EditOutlined />} onClick={() => props.handleEdit(record)}>Edit</Button>
-          <Button danger icon={<DeleteOutlined />} onClick={() => props.handleRemove(record._id)}>Remove</Button>
+          <Button danger icon={<DeleteOutlined />} onClick={() => props.handleRemove(record.id)}>Remove</Button>
         </Space>
       ),
     });
@@ -45,7 +45,6 @@ const CompanyTable = (props: Props) => {
       onChange={handleTableChange}
     />
   );
-
 };
 
 export { CompanyTable };
