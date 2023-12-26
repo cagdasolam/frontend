@@ -2,17 +2,13 @@ import React, { Key, ReactNode, useState } from 'react';
 import { Input, Button, TablePaginationConfig } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { ColumnType } from 'antd/es/table';
-import { FilterValue, SortOrder } from 'antd/es/table/interface';
+import { FilterValue, SortOrder, SorterResult } from 'antd/es/table/interface';
 
-interface UseTableFeature {
+export interface UseTableFeature {
   handleTableChange: (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: { 
-      columnKey?: string; 
-      field?: string;
-      order?: SortOrder;
-      } | undefined 
+    sorter: SorterResult<any> | SorterResult<any>[]  
   ) => void;
   handleSearch: (
     selectedKeys: Key[], confirm: () => void 
@@ -27,7 +23,7 @@ interface UseTableFeature {
 
 
 export const useTableFeatures = (): UseTableFeature => {
-  const [sortedInfo, setSortedInfo] = useState<{columnKey?: string, field?: string, order?: SortOrder}>({});
+  const [sortedInfo, setSortedInfo] = useState<SorterResult<any> | SorterResult<any>[]>({});
   const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
   const [searchText, setSearchText] = useState<string>('');
 
@@ -53,7 +49,8 @@ export const useTableFeatures = (): UseTableFeature => {
     dataIndex,
     key: dataIndex,
     sorter: (a, b) => (a[dataIndex] as string).localeCompare(b[dataIndex]),
-    sortOrder: sortedInfo.columnKey === dataIndex ? sortedInfo.order: undefined,
+    
+    sortOrder: Array.isArray(sortedInfo) ? sortedInfo[0]?.columnKey === dataIndex ? sortedInfo[0]?.order : undefined : sortedInfo?.columnKey === dataIndex ? sortedInfo?.order : undefined,
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
         <Input

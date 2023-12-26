@@ -1,6 +1,6 @@
 import { Table, Button, Space, SpinProps, TablePaginationConfig } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { useTableFeatures } from '../utils/handleTable.jsx';
+import { UseTableFeature, useTableFeatures } from '../utils/handleTable.jsx';
 import { Company } from '../types/Company.js';
 
 type Props = { 
@@ -8,12 +8,12 @@ type Props = {
     loading: boolean | SpinProps;
     pagination: false | TablePaginationConfig;
     actions: boolean;
-    handleEdit: (company: Company) => {};
-    handleRemove: (companyId: number) => {};
+    handleEdit: (company: Company) => void;
+    handleRemove: (companyId: number) => void;
 }
 
 const CompanyTable = (props: Props) => {
-  const { handleTableChange, handleSearch, handleReset, generateColumn } = useTableFeatures();
+  const { handleTableChange, handleSearch, handleReset, generateColumn }: UseTableFeature = useTableFeatures();
 
   const columns = [
     generateColumn('name', 'Company Name'),
