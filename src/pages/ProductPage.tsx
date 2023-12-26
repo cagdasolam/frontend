@@ -64,8 +64,8 @@ const ProductPage = () => {
 
   const handleRemove = async (productId: number) => {
     try {
-      const newProducts = ProductsArray.filter((product) => product.id !== productId);
-            
+      const newProducts = products.filter((product) => product.id !== productId);
+      setProducts(newProducts);
       message.success('Product removed successfully');
     } catch (error) {
       console.error('Error removing product:', error);
@@ -121,7 +121,7 @@ const ProductPage = () => {
           </Button>
         </Col>
       </Row>
-      <ProductTable products={products} companies={companies} loading={loading} pagination={{ pageSize: 10 }} actions={true} handleEdit={handleEdit} handleRemove={handleRemove} />
+      <ProductTable products={products} companies={companiesArray} loading={loading} pagination={{ pageSize: 10 }} actions={true} handleEdit={handleEdit} handleRemove={handleRemove} />
 
       <Modal
         title={selectedProduct ? 'Edit Product' : 'Add New Product'}
@@ -165,7 +165,7 @@ const ProductPage = () => {
           >
             <Select placeholder="Select a company">
 
-              {companies.map((company: Company) => (
+              {companiesArray.map((company: Company) => (
                 <Option key={company.id} value={company.id}>
                   {company.name}
                 </Option>

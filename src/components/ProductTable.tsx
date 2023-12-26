@@ -40,7 +40,7 @@ const ProductTable = (props: Props) => {
             <Button ghost type='primary' icon={<EditOutlined />} onClick={() => props.handleEdit(record)}>
               Edit
             </Button>
-            <Button danger icon={<DeleteOutlined />} onClick={() => props.handleRemove(record._id)}>
+            <Button danger icon={<DeleteOutlined />} onClick={() => props.handleRemove(record.id)}>
               Remove
             </Button>
           </Space>
@@ -53,7 +53,7 @@ const ProductTable = (props: Props) => {
       columns={columns}
       dataSource={props.products}
       loading={props.loading}
-      rowKey="_id"
+      rowKey="id"
       pagination={props.pagination}
       onChange={handleTableChange} />
   );
