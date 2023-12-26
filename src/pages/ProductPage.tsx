@@ -82,7 +82,7 @@ const ProductPage = () => {
     try {
       if (selectedProduct) {
         const updatedProduct = { ...selectedProduct, ...values };
-        const newProducts = ProductsArray.map((product) => {
+        const newProducts = products.map((product) => {
           if (product.id === updatedProduct.id) {
             return updatedProduct;
           }
@@ -96,7 +96,7 @@ const ProductPage = () => {
           ...values,
           id: ProductsArray.length + 1,
         };
-        const newProducts = [...ProductsArray, newProduct];
+        const newProducts = [...products, newProduct];
         setProducts(newProducts);
         message.success('Product added successfully');
       }
