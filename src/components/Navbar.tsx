@@ -8,6 +8,7 @@ import {
 	
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import {MenuInfo, MenuClickEventHandler} from 'rc-menu/lib/interface'
 
 
 const { Header } = Layout;
@@ -19,7 +20,7 @@ interface Props {
 
 const Navbar = (props: Props) => {
 
-	const handleMenuClick = (e: any) => {
+	const handleMenuClick: MenuClickEventHandler = (e: MenuInfo) => {
 		props.setCurrentPath(e.key);
 	};
 
