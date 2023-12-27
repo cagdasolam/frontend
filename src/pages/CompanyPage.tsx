@@ -1,30 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Modal, Form, Input, message, Typography, Row, Col } from 'antd';
-import { PlusOutlined, } from '@ant-design/icons';
+import React, { useState, useEffect } from "react";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Typography,
+  Row,
+  Col,
+} from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
-import { CompanyTable } from '../components/CompanyTable';
-import { Company } from '../types/Company';
+import { CompanyTable } from "../components/CompanyTable";
+import { Company } from "../types/Company";
+import fs from 'fs';
 
 const { Title } = Typography;
 
-const companiesArray: Company[] = 
-[
-    {
-    id: 1,
-    name: 'Company 1',
-    legalNumber: '123456789',
-    incorporationCountry: 'Canada',
-    website: 'www.company1.com',
-    },
-    {
-    id: 2,
-    name: 'Company 2',
-    legalNumber: '987654321',
-    incorporationCountry: 'Canada',
-    website: 'www.company2.com',
-    },
-];
-
+const data = localStorage.getItem('companies');
+const companiesArray: Company[] = data ? JSON.parse(data) : [];
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState<Company[]>(companiesArray);
@@ -33,8 +27,20 @@ const CompanyList = () => {
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [form] = Form.useForm();
 
+useEffect(() => {
+  
+  const fetchCompanies =  () => {
+    setLoading(true);
+    const companies = localStorage.getItem('companies');
+    setCompanies(companies ? JSON.parse(companies) : []);
+    setLoading(false);
+  }
+
+  fetchCompanies();
+}, [companies]);
+
   const handleEdit = (company: Company) => {
-    console.log('Edit company:', company);
+    console.log("Edit company:", company);
     setSelectedCompany(company);
     setModalVisible(true);
     form.setFieldsValue(company);
@@ -42,13 +48,14 @@ const CompanyList = () => {
 
   const handleRemove = async (companyId: number) => {
     try {
-
-			const newCompanies = companies.filter((company) => company.id !== companyId);
-      console.log('Remove company:', companyId);
-			setCompanies(newCompanies);
-      message.success('Company removed successfully');
+      const newCompanies = companies.filter(
+        (company) => company.id !== companyId
+      );
+      console.log("Remove company:", companyId);
+      setCompanies(newCompanies);
+      message.success("Company removed successfully");
     } catch (error) {
-      console.error('Error removing company:', error);
+      console.error("Error removing company:", error);
     }
   };
 
@@ -62,60 +69,92 @@ const CompanyList = () => {
     try {
       if (selectedCompany) {
         const updatedCompany = { ...selectedCompany, ...values };
-				// change the exist company
-				const newCompanies = companies.map((company) => {
-					if (company.id === updatedCompany.id) {
-						return updatedCompany;
-					}
-					return company;});
-				setCompanies(newCompanies);;
-        message.success('Company updated successfully');
-      } else {        
-        // create new company from values assign new id add to companies array
-        
+        const newCompanies = companies.map((company) => {
+          if (company.id === updatedCompany.id) {
+            return updatedCompany;
+          }
+          return company;
+        });
+        localStorage.setItem('companies', JSON.stringify(newCompanies));
+        setCompanies(newCompanies);
+        message.success("Company updated successfully");
+      } else {
         const newCompany = { id: companies.length + 1, ...values };
         const newCompanies = [...companies, newCompany];
+        localStorage.setItem('companies', JSON.stringify(newCompanies));
         setCompanies(newCompanies);
-        console.log('Add new company:', newCompany);
-        message.success('Company added successfully');
+        console.log("Add new company:", newCompany);
+        message.success("Company added successfully");
       }
       handleModalClose();
     } catch (error) {
-      console.error('Error adding new company:', error);
+      console.error("Error adding new company:", error);
     }
   };
 
   return (
     <div>
-      <Row align={'middle'} justify={'space-between'}>
+      <Row align={"middle"} justify={"space-between"}>
         <Col>
           <Title level={2}>Companies</Title>
         </Col>
         <Col>
-          <Button type="primary" icon={<PlusOutlined />} style={{ marginRight: '16px' }} onClick={() => setModalVisible(true)}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            style={{ marginRight: "16px" }}
+            onClick={() => setModalVisible(true)}
+          >
             Add New Company
           </Button>
         </Col>
       </Row>
-			<CompanyTable companies={companies} loading={loading} actions={true} handleEdit={handleEdit} handleRemove={handleRemove} pagination={{ pageSize: 10 }} />
+      <CompanyTable
+        companies={companies}
+        loading={loading}
+        actions={true}
+        handleEdit={handleEdit}
+        handleRemove={handleRemove}
+        pagination={{ pageSize: 10 }}
+      />
 
       <Modal
-        title={selectedCompany ? 'Edit Company' : 'Add New Company'}
+        title={selectedCompany ? "Edit Company" : "Add New Company"}
         open={modalVisible}
         onCancel={handleModalClose}
         onOk={() => form.submit()}
       >
         <Form form={form} onFinish={handleAddCompany}>
-          <Form.Item name="name" label="Company Name" rules={[{ required: true, message: 'Please enter company name' }]}>
+          <Form.Item
+            name="name"
+            label="Company Name"
+            rules={[{ required: true, message: "Please enter company name" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="legalNumber" label="Company Legal Number" rules={[{ required: true, message: 'Please enter company legal number' }]}>
+          <Form.Item
+            name="legalNumber"
+            label="Company Legal Number"
+            rules={[
+              { required: true, message: "Please enter company legal number" },
+            ]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="incorporationCountry" label="Incorporation Country" rules={[{ required: true, message: 'Please enter incorporation country' }]}>
+          <Form.Item
+            name="incorporationCountry"
+            label="Incorporation Country"
+            rules={[
+              { required: true, message: "Please enter incorporation country" },
+            ]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="website" label="Website" rules={[{ required: true, message: 'Please enter website' }]}>
+          <Form.Item
+            name="website"
+            label="Website"
+            rules={[{ required: true, message: "Please enter website" }]}
+          >
             <Input />
           </Form.Item>
         </Form>

@@ -2,11 +2,10 @@ import { Table, Button, Space, TablePaginationConfig } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useTableFeatures } from '../utils/handleTable';
 import { Product } from '../types/Product.js';
-import { Company } from '../types/Company.js';
+import { Company } from '../types/Company';
 
 type Props = {
     products: Product[];
-    companies: Company[];
     loading: boolean;
     pagination: false | TablePaginationConfig;
     actions: boolean;
@@ -22,12 +21,10 @@ const ProductTable = (props: Props) => {
     generateColumn('category', 'Category'),
     generateColumn('amount', 'Amount'),
     generateColumn('amountUnit', 'Amount Unit'),
-    generateColumn('company', 'Company Name', (text, record) => {
-      if (!record.company) {
-        return 'N/A';
-      }
-      return record.company.name;
-    })
+    generateColumn('company', 'Company Name', (record: Company) => {
+      return record.name;
+    }, (a: Company, b: Company) => a.name.localeCompare(b.name)
+    )
   ];
 
   if (props.actions) {

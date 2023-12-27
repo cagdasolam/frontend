@@ -17,7 +17,8 @@ export interface UseTableFeature {
   generateColumn: (
     dataIndex: string,
     title: string,
-    render?: (text: any, record: any) => ReactNode
+    render?: (text: any, record: any) => ReactNode,
+    sorter?: boolean | ((a: any, b: any) => number),
   ) => ColumnType<any>;
 }
 
@@ -44,11 +45,11 @@ export const useTableFeatures = (): UseTableFeature => {
     setSearchText('');
   };
 
-  const generateColumn: UseTableFeature['generateColumn'] = (dataIndex, title, render = undefined) => ({
+  const generateColumn: UseTableFeature['generateColumn'] = (dataIndex, title, render = undefined, sorter) => ({
     title,
     dataIndex,
     key: dataIndex,
-    sorter: (a, b) => (a[dataIndex] as string).localeCompare(b[dataIndex]),
+    sorter: sorter ? sorter : (a, b) => a[dataIndex].localeCompare(b[dataIndex]),
     
     sortOrder: Array.isArray(sortedInfo) ? sortedInfo[0]?.columnKey === dataIndex ? sortedInfo[0]?.order : undefined : sortedInfo?.columnKey === dataIndex ? sortedInfo?.order : undefined,
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (

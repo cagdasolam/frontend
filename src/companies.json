@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "Company 1",
+    "legalNumber": "123456789",
+    "incorporationCountry": "Canada",
+    "website": "www.company1.com"
+  },
+  {
+    "id": 2,
+    "name": "Company 2",
+    "legalNumber": "987654321",
+    "incorporationCountry": "Canada",
+    "website": "www.company2.com"
+  },
+  {
+    "id": 3,
+    "name": "Company 3",
+    "legalNumber": "123456789",
+    "incorporationCountry": "Turkey",
+    "website": "www.company3.com"
+  },
+  {
+    "id": 4,
+    "name": "Company 4",
+    "legalNumber": "987654321",
+    "incorporationCountry": "Turkey",
+    "website": "www.company4.com"
+  },
+  {
+    "id": 5,
+    "name": "Company 5",
+    "legalNumber": "123456789",
+    "incorporationCountry": "England",
+    "website": "www.company5.com"
+  },
+  {
+    "id": 6,
+    "name": "Company 6",
+    "legalNumber": "987654321",
+    "incorporationCountry": "Turkey",
+    "website": "www.company6.com"
+  },
+  {
+    "id": 7,
+    "name": "Company 7",
+    "legalNumber": "123456789",
+    "incorporationCountry": "England",
+    "website": "www.company7.com"
+  },
+  {
+    "id": 8,
+    "name": "Company 8",
+    "legalNumber": "987654321",
+    "incorporationCountry": "Turkey",
+    "website": "www.company8.com"
+  },
+  {
+    "id": 9,
+    "name": "Company 9",
+    "legalNumber": "123456789",
+    "incorporationCountry": "England",
+    "website": "www.company9.com"
+  },
+  {
+    "id": 10,
+    "name": "Company 10",
+    "legalNumber": "987654321",
+    "incorporationCountry": "Turkey",
+    "website": "www.company10.com"
+  }
+]

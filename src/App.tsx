@@ -5,6 +5,7 @@ import { Layout } from 'antd';
 import Navbar from './components/Navbar';
 import Companypage from './pages/CompanyPage';
 import ProductPage from './pages/ProductPage';
+import HomePage from './pages/HomePage';
 
 const { Content } = Layout;
 
@@ -20,7 +21,7 @@ function App() {
           <Routes>
             <Route path="/products" element={<ProductPage />} />
             <Route path="/companies" element={<Companypage />} />
-            <Route path="/about" element={<h1>About</h1>} />
+            <Route path="/home" element={<HomePage />} />
             <Route path="/" element={<Navigate to="/companies" />} />
           </Routes>
         </Content>
