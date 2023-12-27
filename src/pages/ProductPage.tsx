@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Form, Input, Select, message, Typography, Row, Col } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProductTable } from '../components/ProductTable';
@@ -48,9 +48,9 @@ const ProductsArray: Product[] = [
 
 const ProductPage = () => {
   const [products, setProducts] = useState<Product[]>(ProductsArray);
-  const [companies, setCompanies] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [companies, setCompanies] = useState<Company[]>(companiesArray);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const [form] = Form.useForm();
@@ -94,8 +94,10 @@ const ProductPage = () => {
         console.log('Add product:', values);
         const newProduct = {
           ...values,
-          id: ProductsArray.length + 1,
+          company: companies.find((company) => company.id === values.company),
+          id: products.length + 1,
         };
+        console.log('New product:', newProduct);
         const newProducts = [...products, newProduct];
         setProducts(newProducts);
         message.success('Product added successfully');
@@ -117,11 +119,11 @@ const ProductPage = () => {
         </Col>
         <Col>
           <Button type="primary" icon={<PlusOutlined />} style={{ marginRight: '16px' }} onClick={() => setModalVisible(true)}>
-            Add New Company
+            Add New Product
           </Button>
         </Col>
       </Row>
-      <ProductTable products={products} companies={companiesArray} loading={loading} pagination={{ pageSize: 10 }} actions={true} handleEdit={handleEdit} handleRemove={handleRemove} />
+      <ProductTable products={products} companies={companies} loading={loading} pagination={{ pageSize: 10 }} actions={true} handleEdit={handleEdit} handleRemove={handleRemove} />
 
       <Modal
         title={selectedProduct ? 'Edit Product' : 'Add New Product'}
@@ -165,7 +167,7 @@ const ProductPage = () => {
           >
             <Select placeholder="Select a company">
 
-              {companiesArray.map((company: Company) => (
+              {companies.map((company: Company) => (
                 <Option key={company.id} value={company.id}>
                   {company.name}
                 </Option>

@@ -27,9 +27,9 @@ const companiesArray: Company[] =
 
 
 const CompanyList = () => {
-  const [companies, setCompanies] = useState(companiesArray);
-  const [loading, setLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [companies, setCompanies] = useState<Company[]>(companiesArray);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [form] = Form.useForm();
 
