@@ -4,6 +4,10 @@ import { CompanyTable } from "../components/CompanyTable";
 import { ProductTable } from "../components/ProductTable";
 import { Company } from "../types/Company";
 import { Product } from "../types/Product";
+import {
+  IncorporationCountryChart,
+  ProductGroupByCompanyChart,
+} from "../components/ChartComponent";
 
 const HomePage = () => {
   const [companyCount, setCompanyCount] = useState(0);
@@ -14,8 +18,12 @@ const HomePage = () => {
   const [highestAmountProduct, setHighestAmountProduct] = useState<Product[]>(
     []
   );
-  const [countByCountry, setCountByCountry] = useState([]);
-  const [countByCompany, setCountByCompany] = useState([]);
+  const [countByCountry, setCountByCountry] = useState<Record<string, number>>(
+    {}
+  );
+  const [countByCompany, setCountByCompany] = useState<Record<string, number>>(
+    {}
+  );
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -27,8 +35,10 @@ const HomePage = () => {
     const productData = localStorage.getItem("products");
     const ProductsArray: Product[] = productData ? JSON.parse(productData) : [];
 
+    setLoading(true);
     setCompanies(companiesArray);
     setProducts(ProductsArray);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -42,8 +52,24 @@ const HomePage = () => {
           : companies.slice(Math.max(companies.length - 3, 0))
       );
     };
+    const getCompanyCountByCountry = () => {
+      const countByCountryRecord = companies.reduce(
+        (acc: Record<string, number>, company) => {
+          acc[company.incorporationCountry] =
+            (acc[company.incorporationCountry] || 0) + 1;
+          return acc;
+        },
+        {}
+      );
+
+      setCountByCountry(countByCountryRecord);
+    };
+
+    setLoading(true);
+    getCompanyCountByCountry();
     getCompanyCount();
     getLatestCompanies();
+    setLoading(false);
   }, [companies]);
 
   useEffect(() => {
@@ -55,8 +81,24 @@ const HomePage = () => {
         products.sort((a, b) => b.amount - a.amount).slice(0, 3)
       );
     };
+
+    const getProductCountByCompany = () => {
+      const countByCompanyRecord = products.reduce(
+        (acc: Record<string, number>, product) => {
+          acc[product.company.name] = (acc[product.company.name] || 0) + 1;
+          return acc;
+        },
+        {}
+      );
+
+      setCountByCompany(countByCompanyRecord);
+    };
+
+    setLoading(true);
+    getProductCountByCompany();
     getProductCount();
     getHighestAmountProduct();
+    setLoading(false);
   }, [products]);
 
   return (
@@ -103,6 +145,9 @@ const HomePage = () => {
               handleRemove={() => {}}
             />
           </Card>
+          <Col span={24}>
+            <IncorporationCountryChart record={countByCountry} />
+          </Col>
         </Col>
 
         <Col span={12}>
@@ -121,6 +166,9 @@ const HomePage = () => {
                   handleRemove={() => {}}
                 />
               </Card>
+            </Col>
+            <Col span={24}>
+              <ProductGroupByCompanyChart record={countByCompany} />
             </Col>
           </Row>
         </Col>
