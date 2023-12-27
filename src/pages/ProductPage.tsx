@@ -50,7 +50,7 @@ const ProductPage = () => {
 
     fetchCompanies();
     fetchProducts();
-  }, [products]);
+  }, []);
 
   const handleEdit = (product: Product) => {
     setSelectedProduct(product);
@@ -79,10 +79,15 @@ const ProductPage = () => {
   const handleAddEditProduct = async (values: any) => {
     try {
       if (selectedProduct) {
+        console.log("company:", values.company);
         const updatedProduct = {
           ...selectedProduct,
           ...values,
-          company: companies.find((company) => company.id === values.company),
+          company: companies.find((company) =>
+            company.id === values.company.id
+              ? values.company.id
+              : values.company
+          ),
         };
         const newProducts = products.map((product) => {
           if (product.id === updatedProduct.id) {

@@ -13,7 +13,7 @@ type Props = {
 }
 
 const CompanyTable = (props: Props) => {
-  const { handleTableChange, handleSearch, handleReset, generateColumn } = useTableFeatures();
+  const { handleTableChange, generateColumn } = useTableFeatures();
 
   const columns = [
     generateColumn('name', 'Company Name'),

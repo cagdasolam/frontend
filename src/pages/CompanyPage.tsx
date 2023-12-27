@@ -13,11 +13,10 @@ import { PlusOutlined } from "@ant-design/icons";
 
 import { CompanyTable } from "../components/CompanyTable";
 import { Company } from "../types/Company";
-import fs from 'fs';
 
 const { Title } = Typography;
 
-const data = localStorage.getItem('companies');
+const data = localStorage.getItem("companies");
 const companiesArray: Company[] = data ? JSON.parse(data) : [];
 
 const CompanyList = () => {
@@ -27,17 +26,16 @@ const CompanyList = () => {
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [form] = Form.useForm();
 
-useEffect(() => {
-  
-  const fetchCompanies =  () => {
-    setLoading(true);
-    const companies = localStorage.getItem('companies');
-    setCompanies(companies ? JSON.parse(companies) : []);
-    setLoading(false);
-  }
+  useEffect(() => {
+    const fetchCompanies = () => {
+      setLoading(true);
+      const companies = localStorage.getItem("companies");
+      setCompanies(companies ? JSON.parse(companies) : []);
+      setLoading(false);
+    };
 
-  fetchCompanies();
-}, [companies]);
+    fetchCompanies();
+  }, []);
 
   const handleEdit = (company: Company) => {
     console.log("Edit company:", company);
@@ -75,13 +73,13 @@ useEffect(() => {
           }
           return company;
         });
-        localStorage.setItem('companies', JSON.stringify(newCompanies));
+        localStorage.setItem("companies", JSON.stringify(newCompanies));
         setCompanies(newCompanies);
         message.success("Company updated successfully");
       } else {
         const newCompany = { id: companies.length + 1, ...values };
         const newCompanies = [...companies, newCompany];
-        localStorage.setItem('companies', JSON.stringify(newCompanies));
+        localStorage.setItem("companies", JSON.stringify(newCompanies));
         setCompanies(newCompanies);
         console.log("Add new company:", newCompany);
         message.success("Company added successfully");
