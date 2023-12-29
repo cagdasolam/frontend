@@ -11,9 +11,9 @@ import {
   Col,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { ProductTable } from "../components/ProductTable";
 import { Company } from "../types/Company";
 import { Product } from "../types/Product";
+import { GenericTable } from "../components/GenericTable";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -118,6 +118,34 @@ const ProductPage = () => {
     }
   };
 
+  const productColumns = [
+    {
+      key: "name",
+      title: "Product Name",
+    },
+    {
+      key: "category",
+      title: "Category",
+    },
+    {
+      key: "amount",
+      title: "Amount",
+    },
+    {
+      key: "amountUnit",
+      title: "Amount Unit",
+    },
+    {
+      key: "company",
+      title: "Company Name",
+      render: (record: Company) => {
+        return record.name;
+      },
+      sorter: (a: {}, b: {}) =>
+        (a as Company).name.localeCompare((b as Company).name) as number,
+    },
+  ];
+
   return (
     <div>
       <Row align={"middle"} justify={"space-between"}>
@@ -135,15 +163,15 @@ const ProductPage = () => {
           </Button>
         </Col>
       </Row>
-      <ProductTable
-        products={products}
+      <GenericTable<Product>
+        dataSource={products}
         loading={loading}
         pagination={{ pageSize: 10 }}
         actions={true}
         handleEdit={handleEdit}
         handleRemove={handleRemove}
+        columns={productColumns}
       />
-
       <Modal
         title={selectedProduct ? "Edit Product" : "Add New Product"}
         open={modalVisible}

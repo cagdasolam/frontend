@@ -11,8 +11,8 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
-import { CompanyTable } from "../components/CompanyTable";
 import { Company } from "../types/Company";
+import { GenericTable } from "../components/GenericTable";
 
 const { Title } = Typography;
 
@@ -90,6 +90,35 @@ const CompanyList = () => {
     }
   };
 
+  const companyColumns = [
+    {
+      title: "Company Name",
+      dataIndex: "name",
+      key: "name",
+      sorter: (a: Company, b: Company) => a.name.localeCompare(b.name),
+    },
+    {
+      title: "Company Legal Number",
+      dataIndex: "legalNumber",
+      key: "legalNumber",
+      sorter: (a: Company, b: Company) =>
+        a.legalNumber.localeCompare(b.legalNumber),
+    },
+    {
+      title: "Incorporation Country",
+      dataIndex: "incorporationCountry",
+      key: "incorporationCountry",
+      sorter: (a: Company, b: Company) =>
+        a.incorporationCountry.localeCompare(b.incorporationCountry),
+    },
+    {
+      title: "Website",
+      dataIndex: "website",
+      key: "website",
+      sorter: (a: Company, b: Company) => a.website.localeCompare(b.website),
+    },
+  ];
+
   return (
     <div>
       <Row align={"middle"} justify={"space-between"}>
@@ -107,13 +136,14 @@ const CompanyList = () => {
           </Button>
         </Col>
       </Row>
-      <CompanyTable
-        companies={companies}
+      <GenericTable<Company>
+        dataSource={companies}
         loading={loading}
         actions={true}
         handleEdit={handleEdit}
         handleRemove={handleRemove}
         pagination={{ pageSize: 10 }}
+        columns={companyColumns}
       />
 
       <Modal
